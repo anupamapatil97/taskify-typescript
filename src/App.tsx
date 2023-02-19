@@ -4,6 +4,7 @@ import './App.css';
 import InputField from './component/InputField';
 import TodoList from './component/TodoList';
 import { Todo } from './model';
+import { useEffect } from 'react';
 
 function App() {
   const [todo, setTodo]=useState<string>("")
@@ -11,6 +12,10 @@ function App() {
   const [completedTodos, setCompletedTodos]=useState<Todo[]>([])
 
 
+  useEffect(()=>{
+console.log(todos)
+    
+  },[todos])
   const handleAdd=(e:React.FormEvent)=>{
     e.preventDefault()
     if(todo){
@@ -44,8 +49,8 @@ function App() {
     }else{
       complete.splice(destination.index, 0, add)
     }
-    setCompletedTodos(complete)
-    setTodos(active)
+    setCompletedTodos(complete.map((e)=>({...e, isDone:true})))
+    setTodos(active.map((e)=>({...e, isDone:false})))
   }
   return (
     <DragDropContext onDragEnd={onDragEnd}>

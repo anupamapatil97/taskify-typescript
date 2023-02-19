@@ -10,6 +10,38 @@ interface Props {
   setCompletedTodos: React.Dispatch<React.SetStateAction<Todo[]>>
 }
 const TodoList: React.FC<Props> = ({ todos, setTodos, completedTodos, setCompletedTodos }) => {
+  const handleDone=(todo:any)=>{
+    
+    if(!todo.isDone)
+    {
+      let updated:any=todos.find((item) =>
+      item.id === todo.id 
+    )
+    updated.isDone=true
+    
+      setCompletedTodos([...completedTodos, updated]);
+      setTodos(
+        todos.filter((item) =>
+          item.id !== todo.id 
+        )
+      );
+    }else{
+      let updated:any=completedTodos.find((item) =>
+      item.id === todo.id 
+    )
+    updated.isDone=false
+      setTodos([...todos, updated]
+        )
+      setCompletedTodos(
+        completedTodos.filter((item) =>
+          item.id !== todo.id 
+        )
+      );
+    }
+
+  }
+
+
   return <div className='container'>
     <Droppable droppableId='TodosList'>
       {
@@ -24,6 +56,7 @@ const TodoList: React.FC<Props> = ({ todos, setTodos, completedTodos, setComplet
                   key={todo.id}
                   todos={todos}
                   setTodos={setTodos}
+                  handleDone={handleDone}
                 />
 
               ))
@@ -46,6 +79,7 @@ const TodoList: React.FC<Props> = ({ todos, setTodos, completedTodos, setComplet
                 key={todo.id}
                 todos={completedTodos}
                 setTodos={setCompletedTodos}
+                handleDone={handleDone}
               />
 
             ))
